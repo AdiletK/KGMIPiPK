@@ -1,0 +1,15 @@
+﻿@model IEnumerable<KGMIPiPK.Lextures>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div id="content"></div>
+
+@section scripts {
+    <script src="~/dist/Lib.lextures.js"></script>
+    <script>
+        Lib.lextures.run();
+    </script>
+}
