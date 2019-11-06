@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace KGMIPiPK
@@ -13,6 +12,7 @@ namespace KGMIPiPK
 
         [Key]
         public int Number { get; set; }
+
         public String FIO { get; set; }
     }
 }

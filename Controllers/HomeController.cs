@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using KGMIPiPK.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using KGMIPiPK.Models;
-using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Linq;
 
 namespace KGMIPiPK.Controllers
 {
@@ -37,7 +32,6 @@ namespace KGMIPiPK.Controllers
             var head = db.Heads.Select(u => new { id = u.Nom, value = u.Name }).ToList();
             var education = db.GlbSStaffType.Select(u => new { id = u.Code, value = u.FullName }).ToList();
 
-
             var data = new
             {
                 course,
@@ -59,6 +53,4 @@ namespace KGMIPiPK.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-
-
 }

@@ -1,15 +1,89 @@
-﻿@model IEnumerable<KGMIPiPK.Lextures>
+﻿@using KGMIPiPK.Models
+@model IndexViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Занятия";
 }
 
+    <h2>
+        Занятия
+        <a class="btn btn-outline-success float-right" href="/Lextures/Create">Новое занятие</a>
+    </h2>
 
-<div id="content"></div>
 
-@section scripts {
-    <script src="~/dist/Lib.lextures.js"></script>
-    <script>
-        Lib.lextures.run();
-    </script>
+<form class="form-inline" method="get">
+   
+    @Html.DropDownList("group", Model.FilterViewModel.Groups as SelectList, htmlAttributes: new { @class = "custom-select my-1 mr-sm-2", @style = "width: 300px;" })
+
+  
+    @Html.DropDownList("teacher", Model.FilterViewModel.Teachers as SelectList, htmlAttributes: new { @class = "custom-select my-1 mr-sm-2", @style = "width: 300px;" })
+
+    <button type="submit" class="btn btn-outline-dark my-1">Поиск</button> 
+    <a asp-action="Index" class="text-dark my-1">Сбросить фильтр поиска</a>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Группа</th>
+            <th>Тема</th>
+            <th>Преподаватель</th>
+            <th>Вид занятия</th>
+            <th>Часов</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Lextures)
+        {
+            <tr>
+                <td>
+                    @item.Day.ToString("dd'/'MM'/'yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupNavigation.CourseNavigation.FullName) - 
+                    @Html.DisplayFor(modelItem => item.GroupNavigation.Grup)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TemaNavigation.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeacherNavigation.Fio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VidZanNavigation.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td>
+                    <a class="icon" asp-action="Details" asp-route-id="@item.Nom"><i class="zi-edit-pencil"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-group="@(Model.FilterViewModel.SelectedGroup)"
+       asp-route-teacher="@(Model.FilterViewModel.SelectedTeacher)"
+       class="btn btn-outline-dark">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-group="@(Model.FilterViewModel.SelectedGroup)"
+       asp-route-teacher="@(Model.FilterViewModel.SelectedTeacher)"
+       class="btn btn-outline-dark">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
 }

@@ -13,7 +13,7 @@ const Select = React.forwardRef((props, ref) => (
                 {
                     props.options.map(option => {
                         return (
-                            <option key={ option.id } value={ props.LabelValue ? option.value : option.id }>{ option.value }</option>
+                            <option key={option.id} value={props.LabelValue ? option.value : option.id}>{option.value}</option>
                         );
                     })
                 }

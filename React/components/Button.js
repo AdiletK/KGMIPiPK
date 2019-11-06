@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Button as BootsButton } from 'react-bootstrap';
 
+
 const Button = (props) => {
     return (
         <>
@@ -15,5 +16,4 @@ const Button = (props) => {
     );
 }
 
-
-export default Button;
+export default Button

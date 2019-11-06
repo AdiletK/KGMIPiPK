@@ -1,22 +1,20 @@
+using JavaScriptEngineSwitcher.ChakraCore;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
-
-using Microsoft.AspNetCore.Http;
-using JavaScriptEngineSwitcher.ChakraCore;
-using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
-using React.AspNet;
-using System;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using React.AspNet;
+using System;
 using System.Globalization;
-using Microsoft.AspNetCore.Localization;
 
 namespace KGMIPiPK
 {
@@ -33,7 +31,6 @@ namespace KGMIPiPK
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<KGMIPiPKContext>(options => options.UseSqlServer(connection));
 
@@ -44,7 +41,6 @@ namespace KGMIPiPK
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
 
-
             //REACT
             ///////////////////
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -54,7 +50,6 @@ namespace KGMIPiPK
             services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
             ///////////////////
 
-
             //services.AddControllersWithViews();
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(options =>
@@ -62,7 +57,6 @@ namespace KGMIPiPK
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.DateFormatString = "dd/MM/yyyy";
                 });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,7 +85,7 @@ namespace KGMIPiPK
             };
             culture.DateTimeFormat = dateformat;
 
-            var supportedCultures = new[]{ culture };
+            var supportedCultures = new[] { culture };
 
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
@@ -131,8 +125,7 @@ namespace KGMIPiPK
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-
+                    template: "{controller=Lextures}/{action=Index}/{id?}");
             });
 
             //app.UseEndpoints(endpoints =>
@@ -142,11 +135,8 @@ namespace KGMIPiPK
             //        pattern: "{controller=Home}/{action=Index}/{id?}");
 
             //});
-
-
         }
     }
-
 
     public static class JavaScriptHelper
     {

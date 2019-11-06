@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using KGMIPiPK.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using KGMIPiPK.Models;
- 
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 namespace KGMIPiPK.Controllers
 {
     public class AccountController : Controller
     {
         private KGMIPiPKContext db;
+
         public AccountController(KGMIPiPKContext context)
         {
             db = context;
@@ -41,13 +42,11 @@ namespace KGMIPiPK.Controllers
             return View(model);
         }
 
-
         //[HttpGet]
         //public IActionResult Register()
         //{
         //    return View();
         //}
-
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]

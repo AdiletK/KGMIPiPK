@@ -1,8 +1,7 @@
-﻿import React, { useState, Component } from 'react';
-import { Alert as BAlert, Button } from 'react-bootstrap';
+﻿import React, { Component } from 'react';
+import { Alert as BAlert } from 'react-bootstrap';
 
 class Alert extends Component {
-
     constructor(props) {
         super(props);
 
@@ -25,7 +24,7 @@ class Alert extends Component {
         if (this.state.show) {
             return (
                 <BAlert variant={this.state.variant} onClose={() => this.setState({ show: false })} dismissible>
-                    <p> { this.state.head } </p>
+                    <p> {this.state.head} </p>
                 </BAlert>
             );
         }
@@ -33,4 +32,4 @@ class Alert extends Component {
     }
 }
 
-export default Alert;
+export default Alert

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KGMIPiPK.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using KGMIPiPK.Models;
-using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
 
 namespace KGMIPiPK.Controllers
 {
@@ -29,14 +27,14 @@ namespace KGMIPiPK.Controllers
         [HttpGet("groups/{id}")]
         public async Task<JsonResult> Groups(int id)
         {
-            return Json(await _context.Groups.Where(t => t.Code == id).Select(u => new { id = u.Code, value = u.Grup }).ToListAsync() );
+            return Json(await _context.Groups.Where(t => t.Course == id).Select(u => new { id = u.Code, value = u.Grup }).ToListAsync());
         }
 
         [HttpGet("districts/{id}")]
         public async Task<JsonResult> Districts(string id)
         {
             var RegionId = await _context.Regions.Where(t => t.Region == id).FirstAsync();
-            return Json( await _context.Districts.Where(t => t.Region == RegionId.Code).Select(u => new { id = u.Code, value = u.District }).ToListAsync() );
+            return Json(await _context.Districts.Where(t => t.Region == RegionId.Code).Select(u => new { id = u.Code, value = u.District }).ToListAsync());
         }
 
         [HttpGet("settlements/{id}")]
@@ -51,31 +49,39 @@ namespace KGMIPiPK.Controllers
             return Json(await _context.Lpu.Where(t => t.District == id).Select(u => new { id = u.Nom, value = u.Name }).ToListAsync());
         }
 
+
+        //find course by group_id
+        [HttpGet("course/{id}")]
+        public async Task<JsonResult> Course(int id)
+        {
+            var group = await _context.Groups.Where(t => t.Code == id).FirstAsync();
+
+            return Json(await _context.Courses.Where(t => t.Nom == group.Course).Select(u => new { id = u.Nom, value = u.FullName }).FirstAsync());
+        }
+
         [Obsolete]
         [HttpGet("search/{id}", Name = "search")]
         public async Task<JsonResult> Search(string id)
         {
-            //var students = _context.Students.Where(s => s.Surname.Contains(id)).Take(30).ToList();
-            return Json(await _context.Names.FromSql("EXECUTE SP1_SearchStudentByFIO {0}", id).ToListAsync());
+            var result = await _context.Names.FromSqlRaw("EXECUTE dbo.SP_FIOOfStudents_1").ToListAsync();
+            return Json(result.Where(e => EF.Functions.Like(e.FIO, "%" + id + "%")).Take(10));
         }
 
-        // api/student/{id}
-        [HttpGet("{id}", Name = "getStudent")]
+       // api/student/{id}
+       [HttpGet("{id}", Name = "getStudent")]
         public async Task<JsonResult> Student(int id)
         {
             return Json(await _context.Students.FindAsync(id));
         }
 
-
         //api/student
         [HttpPost]
-        public async Task<ActionResult<Students>>  Post([FromBody]Students student)
+        public async Task<ActionResult<Students>> Post([FromBody]Students student)
         {
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
             return Ok();
         }
-
 
         // PUT: api/student/5
         [HttpPut("{id}")]
@@ -101,7 +107,6 @@ namespace KGMIPiPK.Controllers
             return NoContent();
         }
 
-
         // DELETE: api/student/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Students>> Delete(int id)
@@ -118,7 +123,6 @@ namespace KGMIPiPK.Controllers
             return NoContent();
         }
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -130,6 +134,4 @@ namespace KGMIPiPK.Controllers
             return _context.Students.Any(e => e.Number == id);
         }
     }
-
-
 }

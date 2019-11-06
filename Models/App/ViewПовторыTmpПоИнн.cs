@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace KGMIPiPK
+﻿namespace KGMIPiPK
 {
     public partial class ViewПовторыTmpПоИнн
     {

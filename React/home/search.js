@@ -2,8 +2,6 @@
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
-
-
 function getSuggestionValue(suggestion) {
     return suggestion.fio;
 }
@@ -40,7 +38,6 @@ class Search extends React.Component {
     onSuggestionsFetchRequested = ({ value }) => {
         axios.get("api/student/search/" + value)
             .then(response => this.setState({ suggestions: response.data }));
-       
     }
 
     onSuggestionSelected = (event, { suggestion, suggestionValue }) => {
@@ -84,7 +81,5 @@ class Search extends React.Component {
         );
     }
 }
-
-
 
 export default Search;

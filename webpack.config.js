@@ -6,16 +6,15 @@ var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
 module.exports = {
     entry: {
-       home: "./React/home/index.js",
-       lextures: "./React/lextures/index.js"
+        home: "./React/home/index.js",
+        lextures: "./React/lextures/index.js"
     },
     output: {
         path: path.join(__dirname, "wwwroot/dist"),
-        filename: "Lib.[name].js",
+        filename: "[name].js",
         publicPath: 'dist/',
-        library: ["Lib", "[name]"],
+        library: ["[name]"],
         libraryTarget: "var"
-        
     },
     module: {
         rules: [
@@ -38,4 +37,3 @@ module.exports = {
     devtool: "inline-source-map",
     plugins: [new WebpackNotifierPlugin(), new BrowserSyncPlugin()]
 };
-

@@ -1,5 +1,3 @@
-using System;
-
 namespace KGMIPiPK.Models
 {
     public class ErrorViewModel

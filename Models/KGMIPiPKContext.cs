@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace KGMIPiPK
 {
@@ -15,6 +13,7 @@ namespace KGMIPiPK
         {
         }
 
+        public virtual DbSet<Course_Group> Course_Group { get; set; }
         public virtual DbSet<Name> Names { get; set; }
         public virtual DbSet<AcademicStatus> AcademicStatus { get; set; }
         public virtual DbSet<AkademStepen> AkademStepen { get; set; }
@@ -96,7 +95,7 @@ namespace KGMIPiPK
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-8S2GQN1;Database=KGMIPiPK;User Id=koyl;password=123;Trusted_Connection=True;");
             }
         }

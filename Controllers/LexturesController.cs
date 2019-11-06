@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using KGMIPiPK;
+using System.Linq;
+using System.Threading.Tasks;
+using KGMIPiPK.Models;
+using System;
 
 namespace KGMIPiPK.Controllers
 {
@@ -18,13 +17,43 @@ namespace KGMIPiPK.Controllers
             _context = context;
         }
 
-        // GET: Lextures
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? group, int? teacher, int page = 1)
         {
-            var lextures = _context.Lextures.Include(l => l.GroupNavigation).Include(l => l.TeacherNavigation).Include(l => l.TemaNavigation).Include(l => l.VidZanNavigation);
+            int pageSize = 10;
 
-            ViewBag.init = lextures.ToList();
-            return View();
+            //фильтрация
+            IQueryable<Lextures> lextures = _context.Lextures
+                .Include(l => l.GroupNavigation)
+                .Include(l => l.GroupNavigation.CourseNavigation)
+                .Include(l => l.TeacherNavigation)
+                .Include(l => l.TemaNavigation)
+                .Include(l => l.VidZanNavigation)
+                .OrderByDescending(l => l.Day);
+
+            if (group != null && group != 0)
+            {
+                lextures = lextures.Where(p => p.Group == group);
+            }
+            if (teacher != null && teacher != 0)
+            {
+                lextures = lextures.Where(p => p.Teacher == teacher);
+            }
+
+            // пагинация
+            var count = await lextures.CountAsync();
+            var items = await lextures.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+
+            var groups = await _context.Course_Group.FromSqlRaw("EXECUTE SP_SelectOfGroups").ToListAsync();
+
+            // формируем модель представления
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                FilterViewModel = new FilterViewModel(groups, group, _context.Teachers.ToList() , teacher),
+                Lextures = items
+            };
+            return View(viewModel);
         }
 
         // GET: Lextures/Details/5
@@ -46,7 +75,6 @@ namespace KGMIPiPK.Controllers
                 return NotFound();
             }
 
-
             return View(lextures);
         }
 
@@ -61,7 +89,7 @@ namespace KGMIPiPK.Controllers
         }
 
         // POST: Lextures/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -101,7 +129,7 @@ namespace KGMIPiPK.Controllers
         }
 
         // POST: Lextures/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

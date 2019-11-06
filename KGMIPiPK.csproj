@@ -12,11 +12,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="libman.json" />
     <Content Remove="wwwroot\%2a%2a" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\fonts\zondicon.eot" />
+    <Content Include="wwwroot\css\fonts\zondicon.svg" />
+    <Content Include="wwwroot\css\fonts\zondicon.ttf" />
+    <Content Include="wwwroot\css\fonts\zondicon.woff" />
     <Content Include="wwwroot\css\site.css" />
+    <Content Include="wwwroot\css\zondicon.css" />
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\icon.png" />
     <Content Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
@@ -77,5 +83,23 @@
   <ItemGroup>
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
