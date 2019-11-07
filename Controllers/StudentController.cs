@@ -63,8 +63,9 @@ namespace KGMIPiPK.Controllers
         [HttpGet("search/{id}", Name = "search")]
         public async Task<JsonResult> Search(string id)
         {
-            var result = await _context.Names.FromSqlRaw("EXECUTE dbo.SP_FIOOfStudents_1").ToListAsync();
-            return Json(result.Where(e => EF.Functions.Like(e.FIO, "%" + id + "%")).Take(10));
+            //var result = await _context.Names.FromSqlRaw("EXECUTE dbo.SP_FIOOfStudents_1").ToListAsync();
+            //return Json(result.Where(e => EF.Functions.Like(e.FIO, "%" + id + "%")).Take(10));
+            return Json(await _context.Names.FromSql("EXECUTE SP1_SearchStudentByFIO {0}", id).ToListAsync());
         }
 
        // api/student/{id}

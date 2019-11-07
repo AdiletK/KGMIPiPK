@@ -13,6 +13,7 @@ namespace KGMIPiPK
         {
         }
 
+        public virtual DbSet<PrisutstvieForLexture> PrisutstvieForLexture { get; set; }
         public virtual DbSet<Course_Group> Course_Group { get; set; }
         public virtual DbSet<Name> Names { get; set; }
         public virtual DbSet<AcademicStatus> AcademicStatus { get; set; }

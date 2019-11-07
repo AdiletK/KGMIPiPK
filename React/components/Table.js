@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 
 const Table = (props) => {
     return (
@@ -13,6 +14,7 @@ const Table = (props) => {
             expandRow={ props.expandRow }
             pagination={ props.pagination ? paginationFactory() : null }
             noDataIndication="Пока что данных нет :[" 
+            cellEdit={ props.cellEdit ? cellEditFactory(props.cellEditSettings) : null}
         />
     );
 }

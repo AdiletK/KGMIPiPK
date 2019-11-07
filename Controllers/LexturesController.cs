@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using KGMIPiPK.Models;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KGMIPiPK.Controllers
 {
+    [Authorize]
     public class LexturesController : Controller
     {
         private readonly KGMIPiPKContext _context;
@@ -75,15 +77,48 @@ namespace KGMIPiPK.Controllers
                 return NotFound();
             }
 
+            // get full group name (course + group)
+            var group = await _context.Course_Group.FromSqlRaw("EXECUTE SP_SelectOfGroups").ToListAsync();
+            ViewBag.Group = group.Where(e => e.Code == lextures.Group).FirstOrDefault();
+
+            //prisutstvie
+            ViewBag.init = await _context.PrisutstvieForLexture.FromSqlRaw("EXECUTE SP1_PrisutstvieForLexture {0} ", id).ToListAsync();
+
             return View(lextures);
+        }
+
+        // PUT: lextures/prisutstvie/5
+        [HttpPut("/lextures/prisutstvie/{id}")]
+        public async Task<ActionResult<PrisutstvieForLexture>> EditStudent(int id, [FromBody]PrisutstvieForLexture upd)
+        {
+            var prisutstvie = await _context.Prisutstvie.FindAsync(id);
+            prisutstvie.Prisutstvie1 = upd.Prisutstvie;
+            prisutstvie.Prim = upd.Prim;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Prisutstvie.Any(e => e.Nom == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // GET: Lextures/Create
         public IActionResult Create()
         {
-            ViewData["Group"] = new SelectList(_context.Groups, "Code", "Grup");
+            ViewData["Group"] = new SelectList(_context.Course_Group.FromSqlRaw("EXECUTE SP_SelectOfGroups"), "Code", "Group");
             ViewData["Teacher"] = new SelectList(_context.Teachers, "Nom", "Fio");
-            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Nom");
+            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Name");
             ViewData["VidZan"] = new SelectList(_context.VidZan, "Nom", "Name");
             return View();
         }
@@ -101,9 +136,9 @@ namespace KGMIPiPK.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Group"] = new SelectList(_context.Groups, "Code", "Grup", lextures.Group);
+            ViewData["Group"] = new SelectList(_context.Course_Group.FromSqlRaw("EXECUTE SP_SelectOfGroups"), "Code", "Group", lextures.Group);
             ViewData["Teacher"] = new SelectList(_context.Teachers, "Nom", "Fio", lextures.Teacher);
-            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Nom", lextures.Tema);
+            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Name", lextures.Tema);
             ViewData["VidZan"] = new SelectList(_context.VidZan, "Nom", "Name", lextures.VidZan);
             return View(lextures);
         }
@@ -121,9 +156,9 @@ namespace KGMIPiPK.Controllers
             {
                 return NotFound();
             }
-            ViewData["Group"] = new SelectList(_context.Groups, "Code", "Grup", lextures.Group);
+            ViewData["Group"] = new SelectList(_context.Course_Group.FromSqlRaw("EXECUTE SP_SelectOfGroups"), "Code", "Group", lextures.Group);
             ViewData["Teacher"] = new SelectList(_context.Teachers, "Nom", "Fio", lextures.Teacher);
-            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Nom", lextures.Tema);
+            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Name", lextures.Tema);
             ViewData["VidZan"] = new SelectList(_context.VidZan, "Nom", "Name", lextures.VidZan);
             return View(lextures);
         }
@@ -160,9 +195,9 @@ namespace KGMIPiPK.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Group"] = new SelectList(_context.Groups, "Code", "Grup", lextures.Group);
+            ViewData["Group"] = new SelectList(_context.Course_Group.FromSqlRaw("EXECUTE SP_SelectOfGroups"), "Code", "Group", lextures.Group);
             ViewData["Teacher"] = new SelectList(_context.Teachers, "Nom", "Fio", lextures.Teacher);
-            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Nom", lextures.Tema);
+            ViewData["Tema"] = new SelectList(_context.Temy, "Nom", "Name", lextures.Tema);
             ViewData["VidZan"] = new SelectList(_context.VidZan, "Nom", "Name", lextures.VidZan);
             return View(lextures);
         }
