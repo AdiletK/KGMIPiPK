@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Студенты";
+}
+
+<div id="app"></div>
+
+@section scripts {
+    <script src="~/dist/home.js"></script>
+    <script>
+        home.run(@Json.Serialize(ViewBag.init));
+    </script>
+}

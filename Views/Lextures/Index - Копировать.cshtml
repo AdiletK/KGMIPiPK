@@ -1,0 +1,68 @@
+﻿@model IEnumerable<KGMIPiPK.Lextures>
+
+@addTagHelper "*, KGMIPiPK"
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Day)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeacherNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TemaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VidZanNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Day)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GroupNavigation.Grup)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeacherNavigation.Fio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TemaNavigation.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VidZanNavigation.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Nom">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Nom">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Nom">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
