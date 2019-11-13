@@ -1,9 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.Common;
+using Dapper;
+using System.Threading.Tasks;
 
 namespace KGMIPiPK
 {
     public partial class KGMIPiPKContext : DbContext
     {
+        private DbConnection connection;
+
         public KGMIPiPKContext()
         {
         }
@@ -11,6 +17,8 @@ namespace KGMIPiPK
         public KGMIPiPKContext(DbContextOptions<KGMIPiPKContext> options)
             : base(options)
         {
+            //use this connection for Dapper queries
+            connection = this.Database.GetDbConnection();
         }
 
         public virtual DbSet<PrisutstvieForLexture> PrisutstvieForLexture { get; set; }
@@ -100,6 +108,31 @@ namespace KGMIPiPK
                 optionsBuilder.UseSqlServer("Server=DESKTOP-8S2GQN1;Database=KGMIPiPK;User Id=koyl;password=123;Trusted_Connection=True;");
             }
         }
+
+        //Dapper methods
+        public async Task<int> SP_InsertToLexturesAsync(Lextures lextures)
+        {
+            var sql = "SP_InsertToLextures";
+            using (var con = connection)
+            {
+                con.Open();
+
+                var p = new DynamicParameters();
+                p.Add("@day", lextures.Day);
+                p.Add("@group", lextures.Group);
+                p.Add("@Vid_zan", lextures.VidZan);
+                p.Add("@tema", lextures.Tema);
+                p.Add("@teacher", lextures.Teacher);
+                p.Add("@hours", lextures.Hours);
+                p.Add("@nom", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                var affectedRows = await con.ExecuteAsync(sql,p, commandType: CommandType.StoredProcedure);
+                
+                return p.Get<int>("@nom");
+            }
+        }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

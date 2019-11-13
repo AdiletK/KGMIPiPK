@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KGMIPiPK;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KGMIPiPK.Controllers.DB
 {
+    [Authorize]
     public class CyclesController : Controller
     {
         private readonly KGMIPiPKContext _context;

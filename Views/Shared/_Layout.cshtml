@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - KGMIPiPK</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    @RenderSection("Styles", required: false)
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/zondicon.css">
     <link rel="stylesheet" href="~/css/site.css" />
@@ -43,12 +44,12 @@
                                     <a class="dropdown-item disabled" href="#" >Мед учреждения</a>
                                     <a class="dropdown-item" asp-controller="Posts" asp-action="Index">Должности</a>
                                     <a class="dropdown-item" asp-controller="Heads" asp-action="Index">Руководящие должности</a>
-                                    <a class="dropdown-item disabled" href="#" disabled>Курсы - Группы</a>
+                                    <a class="dropdown-item" asp-controller="Courses" asp-action="Index">Курсы</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" asp-controller="Cycles" asp-action="Index">Циклы</a>
                                     <a class="dropdown-item" asp-controller="Topics" asp-action="Index">Темы</a>
                                     <a class="dropdown-item" asp-controller="Teachers" asp-action="Index">Преподаватели</a>
-                                    <a class="dropdown-item disabled" href="#" disabled>Списки групп</a>
+                                    <a class="dropdown-item" asp-controller="GroupLists" asp-action="Index" >Списки групп</a>
                                 </div>
                             </li>
 
@@ -62,17 +63,16 @@
         </nav>
 
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
             @RenderBody()
-        </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2019 - KGMIPiPK
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)

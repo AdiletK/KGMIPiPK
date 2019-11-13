@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using KGMIPiPK;
+using KGMIPiPK.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KGMIPiPK.Controllers.DB
 {
+    [Authorize]
     public class TeachersController : Controller
     {
         private readonly KGMIPiPKContext _context;
@@ -19,10 +21,32 @@ namespace KGMIPiPK.Controllers.DB
         }
 
         // GET: Teachers
-        public async Task<IActionResult> Index()
+        [Route("Teachers/{page:int=1}")]
+        public async Task<IActionResult> Index(int page)
         {
-            var kGMIPiPKContext = _context.Teachers.Include(t => t.DepartmentNavigation).Include(t => t.FacultyNavigation);
-            return View(await kGMIPiPKContext.ToListAsync());
+            if (page < 1)
+            {
+                return NotFound();
+            }
+            int pageSize = 15;
+            var source = _context.Teachers.Include(t => t.DepartmentNavigation).Include(t => t.FacultyNavigation);
+
+            var count = await source.CountAsync();
+            var items = await source.Skip((page - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync();
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            if (pageViewModel.TotalPages < page)
+            {
+                return NotFound();
+            }
+
+            TeacherViewModel viewModel = new TeacherViewModel
+            {
+                PageViewModel = pageViewModel,
+                Teachers = items
+            };
+
+            return View(viewModel);
         }
 
         // GET: Teachers/Details/5

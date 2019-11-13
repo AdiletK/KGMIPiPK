@@ -12,6 +12,7 @@ namespace KGMIPiPK
         }
 
         public int Nom { get; set; }
+        [DataType(DataType.Date)]
         public DateTime Day { get; set; }
         public int Group { get; set; }
         public short Tema { get; set; }

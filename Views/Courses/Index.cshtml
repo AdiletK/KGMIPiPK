@@ -4,72 +4,57 @@
     ViewData["Title"] = "Курсы";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+
+<h2>
+    Курсы
+    <a class="btn btn-outline-success float-right"  asp-action="Create">Новый курс</a>
+</h2>
+
+<table class="table table-borderless table-striped table-hover">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.From)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.To)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Graduated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Plan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Oplata)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IstFinNavigation)
-            </th>
+            <th>Курс</th>
+            <th>с</th>
+            <th>по</th>
+            <th class="text-center">План </th>
+            <th>Фин.</th>
+            <th class="text-center">Стоим.обуч.</th>
+            <th class="text-center">Закрыто </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.From)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.To)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Graduated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Plan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Oplata)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IstFinNavigation.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Nom">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Nom">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Nom">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.From)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.To)
+                </td>
+                <td  class="text-center">
+                    @Html.DisplayFor(modelItem => item.Plan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IstFinNavigation.Name)
+                </td>
+                <td  class="text-center">
+                    @Html.DisplayFor(modelItem => item.Oplata)
+                </td>
+                <td class="text-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="Graduated" name="Graduated" checked=@item.Graduated disabled/>
+                        <label class="custom-control-label" for="Graduated"></label>
+                    </div>
+                </td>
+                <td>
+                    <a class="icon" asp-action="Details" asp-route-id="@item.Nom"><i class="zi-edit-pencil"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

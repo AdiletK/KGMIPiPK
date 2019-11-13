@@ -2,12 +2,12 @@
 
 
 
+<h4>
+    <a class="icon" asp-action="Index"><i class="zi-arrow-thin-left"></i></a>
+</h4>
+<hr />
+
 <form asp-action="Create">
-    <h4>
-        <a class="icon" asp-action="Index"><i class="zi-arrow-thin-left"></i></a>
-        <input type="submit" value="Добавить" class="btn btn-outline-dark float-right" />
-    </h4>
-    <hr />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-row">
         <div class="col">
@@ -46,6 +46,7 @@
             <select asp-for="VidZan" class="form-control" asp-items="ViewBag.VidZan"></select>
         </div>
     </div>
+    <input type="submit" value="Добавить" class="btn btn-outline-dark float-right" />
 </form>
 
 

@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KGMIPiPK;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KGMIPiPK.Controllers.App
 {
+    [Authorize]
     public class CoursesController : Controller
     {
         private readonly KGMIPiPKContext _context;
@@ -21,8 +23,7 @@ namespace KGMIPiPK.Controllers.App
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            var kGMIPiPKContext = _context.Courses.Include(c => c.IstFinNavigation);
-            return View(await kGMIPiPKContext.ToListAsync());
+            return View(await _context.Courses.Include(c => c.IstFinNavigation).OrderByDescending(e => e.From).AsNoTracking().ToListAsync());
         }
 
         // GET: Courses/Details/5
@@ -40,6 +41,8 @@ namespace KGMIPiPK.Controllers.App
             {
                 return NotFound();
             }
+
+            ViewBag.init = await _context.Groups.Where(t => t.Course == id).Select(u => new { id = u.Code, value = u.Grup }).AsNoTracking().ToListAsync();
 
             return View(courses);
         }

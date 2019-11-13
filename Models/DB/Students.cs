@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace KGMIPiPK
 {
@@ -18,6 +19,7 @@ namespace KGMIPiPK
         public string Surname { get; set; }
         public string Name { get; set; }
         public string Lastname { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? DateBorn { get; set; }
         public byte? Sex { get; set; }
         public string IdNumber { get; set; }

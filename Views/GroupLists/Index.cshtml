@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Список слушателей";
+}
+
+<div id="app"></div>
+
+@section scripts {
+    <script src="~/dist/grouplists.js"></script>
+    <script>
+        grouplists.run(@Json.Serialize(ViewBag.init));
+    </script>
+}

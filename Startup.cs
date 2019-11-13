@@ -1,10 +1,10 @@
-using JavaScriptEngineSwitcher.ChakraCore;
-using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using React.AspNet;
 using System;
 using System.Globalization;
+
 
 namespace KGMIPiPK
 {
@@ -31,31 +31,20 @@ namespace KGMIPiPK
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<KGMIPiPKContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<KGMIPiPKContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
 
-            //REACT
-            ///////////////////
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddReact();
-
-            // Make sure a JS engine is registered, or you will get an error!
-            services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
-            ///////////////////
-
-            //services.AddControllersWithViews();
-            services.AddMvc(option => option.EnableEndpointRouting = false)
+            services.AddMvc()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.DateFormatString = "dd/MM/yyyy";
+                    options.SerializerSettings.Converters.Add(new TrimmingConverter());
                 });
         }
 
@@ -77,6 +66,7 @@ namespace KGMIPiPK
             }
             app.UseHttpsRedirection();
 
+
             var culture = CultureInfo.CreateSpecificCulture("en-US");
             var dateformat = new DateTimeFormatInfo
             {
@@ -94,65 +84,56 @@ namespace KGMIPiPK
                 SupportedUICultures = supportedCultures
             });
 
-            //// Initialise ReactJS.NET. Must be before static files.
-            //app.UseReact(config =>
-            //{
-            //    // If you want to use server-side rendering of React components,
-            //    // add all the necessary JavaScript files here. This includes
-            //    // your components as well as all of their dependencies.
-            //    // See http://reactjs.net/ for more information. Example:
-            //    //config
-            //    //  .AddScript("~/js/First.jsx")
-            //    //  .AddScript("~/js/Second.jsx");
-
-            //    // If you use an external build too (for example, Babel, Webpack,
-            //    // Browserify or Gulp), you can improve performance by disabling
-            //    // ReactJS.NET's version of Babel and loading the pre-transpiled
-            //    // scripts. Example:
-            //    config
-            //      .SetLoadBabel(false)
-            //      .AddScriptWithoutTransform("~/dist/home/index.js")
-            //      .AddScriptWithoutTransform("~/dist/lessons/index.js");
-            //});
-
             app.UseStaticFiles();
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Lextures}/{action=Index}/{id?}");
-            });
 
-            //app.UseEndpoints(endpoints =>
+            //app.UseMvc(routes =>
             //{
-            //    endpoints.MapControllerRoute(
+            //    routes.MapRoute(
             //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
-
+            //        template: "{controller=Courses}/{action=Index}/{id?}");
             //});
-        }
-    }
 
-    public static class JavaScriptHelper
-    {
-        public static string Json(object obj)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings
+            app.UseEndpoints(endpoints =>
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                Converters = new JsonConverter[]
-                {
-                    new StringEnumConverter(),
-                },
-                StringEscapeHandling = StringEscapeHandling.EscapeHtml
-            };
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            return JsonConvert.SerializeObject(obj, settings);
+            });
         }
     }
+
+
+    class TrimmingConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(string);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            if (reader.TokenType == JsonToken.String)
+                if (reader.Value != null)
+                    return (reader.Value as string).Trim();
+
+            return reader.Value;
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var text = (string)value;
+            if (text == null)
+                writer.WriteNull();
+            else
+                writer.WriteValue(text.Trim());
+        }
+    }
+
 }
