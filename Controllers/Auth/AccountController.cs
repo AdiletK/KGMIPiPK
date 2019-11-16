@@ -42,35 +42,6 @@ namespace KGMIPiPK.Controllers
             return View(model);
         }
 
-        //[HttpGet]
-        //public IActionResult Register()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Register(RegisterModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        User user = await db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-        //        if (user == null)
-        //        {
-        //            // добавляем пользователя в бд
-        //            db.Users.Add(new User { Email = model.Email, Password = model.Password });
-        //            await db.SaveChangesAsync();
-
-        //            await Authenticate(model.Email); // аутентификация
-
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        else
-        //            ModelState.AddModelError("", "Некорректные логин и(или) пароль");
-        //    }
-        //    return View(model);
-        //}
-
         private async Task Authenticate(string userName)
         {
             // создаем один claim

@@ -1,0 +1,36 @@
+﻿@model KGMIPiPK.Groups
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Groups</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Grup)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Grup)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Select)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Select)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CourseNavigation.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Code">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

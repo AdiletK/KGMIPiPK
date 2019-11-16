@@ -4,63 +4,67 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Courses</h4>
+    <h4>
+        <a class="icon" asp-action="Index"><i class="zi-arrow-thin-left"></i></a>
+        <a class="btn btn-outline-dark float-right" asp-action="Edit" asp-route-id="@Model.Nom"> Редактировать </a>
+    </h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            Курс
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.From)
+        <dt class="col-sm-2">
+            с
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.From)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.To)
+        <dt class="col-sm-2">
+            по
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.To)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
+        <dt class="col-sm-2">
+            План
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Graduated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Graduated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Plan)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Plan)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Oplata)
+        <dt class="col-sm-2">
+            Источник финансирования
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Oplata)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IstFinNavigation)
+        <dt class="col-sm-2">
+            Стоимость обучения
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IstFinNavigation.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Закрыто
+        </dt>
+        <dd class="col-sm-10">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="Graduated" name="Graduated" checked=@Model.Graduated disabled />
+                <label class="custom-control-label" for="Graduated"></label>
+            </div>
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Nom">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<hr />
+<div id="app"></div>
+
+@section scripts {
+    <script src="~/dist/groups.js"></script>
+    <script>
+        groups.run(@Json.Serialize(ViewBag.init));
+    </script>
+}

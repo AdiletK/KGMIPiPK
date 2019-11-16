@@ -1,58 +1,52 @@
 ﻿@model KGMIPiPK.Lextures
 
-@{
-    ViewData["Title"] = "Edit";
-}
+    <form asp-action="Edit">
+        <h4>
+            <a class="icon" asp-action="Index"><i class="zi-arrow-thin-left"></i></a>
+            <input type="submit" value="Сохранить" class="btn btn-outline-dark float-right" />
+        </h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Nom" />
+        <div class="form-row">
+            <div class="col">
+                <label for="Group" class="control-label">Группа</label>
+                <select asp-for="Group" class="form-control" asp-items="ViewBag.Group"></select>
+            </div>
+        </div>
 
-<h1>Edit</h1>
+        <div class="form-row">
+            <div class="col">
+                <label for="Teacher" class="control-label">Преподаватель</label>
+                <select asp-for="Teacher" class="form-control" asp-items="ViewBag.Teacher"></select>
+            </div>
+            <div class="col">
+                <label for="Tema" class="control-label">Тема</label>
+                <select asp-for="Tema" class="form-control" asp-items="ViewBag.Tema"></select>
+            </div>
+        </div>
 
-<h4>Lextures</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Nom" />
-            <div class="form-group">
-                <label asp-for="Day" class="control-label"></label>
+        <div class="form-row">
+            <div class="col">
+                <label for="Day" class="control-label">Дата</label>
                 <input asp-for="Day" class="form-control" />
                 <span asp-validation-for="Day" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Group" class="control-label"></label>
-                <select asp-for="Group" class="form-control" asp-items="ViewBag.Group"></select>
-                <span asp-validation-for="Group" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tema" class="control-label"></label>
-                <select asp-for="Tema" class="form-control" asp-items="ViewBag.Tema"></select>
-                <span asp-validation-for="Tema" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Teacher" class="control-label"></label>
-                <select asp-for="Teacher" class="form-control" asp-items="ViewBag.Teacher"></select>
-                <span asp-validation-for="Teacher" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hours" class="control-label"></label>
-                <input asp-for="Hours" class="form-control" />
-                <span asp-validation-for="Hours" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VidZan" class="control-label"></label>
-                <select asp-for="VidZan" class="form-control" asp-items="ViewBag.VidZan"></select>
-                <span asp-validation-for="VidZan" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div class="col">
+                <label for="Hours" class="control-label">Часов</label>
+                <input asp-for="Hours" type="number" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col">
+                <label for="VidZan" class="control-label">Вид занятий</label>
+                <select asp-for="VidZan" class="form-control" asp-items="ViewBag.VidZan"></select>
+            </div>
+        </div>
+    </form>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

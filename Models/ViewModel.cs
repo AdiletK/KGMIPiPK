@@ -13,6 +13,12 @@ namespace KGMIPiPK.Models
         public FilterViewModel FilterViewModel { get; set; }
     }
 
+    public class TeacherViewModel
+    {
+        public IEnumerable<Teachers> Teachers { get; set; }
+        public PageViewModel PageViewModel { get; set; }
+    }
+
 
     public class PageViewModel
     {

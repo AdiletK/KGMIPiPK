@@ -6,8 +6,10 @@ var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
 module.exports = {
     entry: {
-        home: "./React/home/index.js",
-        lextures: "./React/lextures/index.js"
+        home: "./js/home/index.js",
+        lextures: "./js/lextures/index.js",
+        groups: "./js/groups/index.js",
+        grouplists: "./js/grouplists/index.js",
     },
     output: {
         path: path.join(__dirname, "wwwroot/dist"),

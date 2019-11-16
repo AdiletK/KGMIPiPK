@@ -22,6 +22,7 @@
     <Content Include="wwwroot\css\fonts\zondicon.ttf" />
     <Content Include="wwwroot\css\fonts\zondicon.woff" />
     <Content Include="wwwroot\css\site.css" />
+    <Content Include="wwwroot\css\404.css" />
     <Content Include="wwwroot\css\zondicon.css" />
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\icon.png" />
@@ -61,12 +62,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore" Version="3.1.10" />
-    <PackageReference Include="JavaScriptEngineSwitcher.ChakraCore.Native.win-x64" Version="3.1.10" />
-    <PackageReference Include="JavaScriptEngineSwitcher.Extensions.MsDependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
@@ -76,8 +74,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-    <PackageReference Include="React.AspNet" Version="5.1.1" />
-    <PackageReference Include="React.Core" Version="5.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -100,6 +96,6 @@
     <TypeScriptSourceRoot />
   </PropertyGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

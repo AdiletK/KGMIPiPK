@@ -1,54 +1,61 @@
 ﻿@model KGMIPiPK.Lextures
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Занятия";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Lextures</h4>
+    <h4>
+        <a class="icon" asp-action="Index"><i class="zi-arrow-thin-left"></i></a>
+        <a class="btn btn-outline-dark float-right" asp-action="Edit" asp-route-id="@Model.Nom"> Редактировать </a>
+    </h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Day)
+            Дата
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Day)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hours)
+            Часов
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Hours)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GroupNavigation)
+            Группа
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GroupNavigation.Grup)
+            @ViewBag.Group.Group
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TeacherNavigation)
+            Преподаватель
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TeacherNavigation.Fio)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TemaNavigation)
+            Тема
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TemaNavigation.Nom)
+            @Html.DisplayFor(model => model.TemaNavigation.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.VidZanNavigation)
+            Вид занятия
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.VidZanNavigation.Name)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Nom">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<hr />
+<div id="app"></div>
+
+@section scripts {
+    <script src="~/dist/lextures.js"></script>
+    <script>
+        lextures.run(@Json.Serialize(ViewBag.init));
+    </script>
+}

@@ -1,0 +1,51 @@
+﻿@using KGMIPiPK.Models
+@model TeacherViewModel
+
+@addTagHelper "*, KGMIPiPK"
+@{
+    ViewData["Title"] = "Преподаватели";
+}
+
+
+<h2>
+    Занятия
+    <a class="btn btn-outline-success float-right" asp-action="Create">Добавить преподавателя</a>
+</h2>
+
+
+<table class="table table-borderless table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Факультет
+            </th>
+            <th>
+                Кафедра
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Teachers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FacultyNavigation.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentNavigation.Name)
+                </td>
+                <td>
+                    <a class="icon" asp-action="Details" asp-route-id="@item.Nom"><i class="zi-edit-pencil"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<page-link page-model="Model.PageViewModel" page-action="Index"></page-link>
