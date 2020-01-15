@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +11,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KGMIPiPK.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class GroupsController : Controller
     {
-        private KGMIPiPKContext _context = new KGMIPiPKContext();
+        private KGMIPiPKContext _context;
+
+        public GroupsController(KGMIPiPKContext context)
+        {
+            _context = context;
+        }
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<Course_Group> Groups()
@@ -22,29 +30,6 @@ namespace KGMIPiPK.Controllers
             return groups;
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+       
     }
 }
